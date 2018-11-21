@@ -1,0 +1,198 @@
+#include <bits/stdc++.h>
+using namespace std;
+string data,sent_message,generator_polynomial,generator_binary;
+int g_size,s_m_size;
+
+string polynomial_to_binary(string poly) {
+
+    string binary_no;
+    vector<int> v;
+
+    for(size_t i=0; i<poly.size(); i++) {
+
+        if(isdigit(poly[i])) {
+
+            if(i!=0 && poly[i-1]=='^') {
+
+                stringstream stream;
+                int num;
+                stream << poly[i];
+                stream >> num;
+
+                v.push_back(num);
+            }
+            else {
+                v.push_back(0);
+            }
+        }
+    }
+
+    int n = v[0]+1;
+    while (n--) {
+        binary_no+="0";
+    }
+
+    for(size_t i=0; i<v.size(); i++) {
+       int t = v[i];
+       binary_no[t] = '1';
+    }
+
+    reverse(binary_no.begin(), binary_no.end());
+
+    return binary_no;
+
+}
+
+
+string binary_to_polynomial ( string binary ){
+	string bolynomial ="";
+int index = binary.length() -1 ;
+
+for (size_t x = 0  ; x <binary.length() ; x++){
+
+	if ( binary[x] =='1'){
+	stringstream xx ;
+	xx<<index ;
+	string xsting = xx.str() ;
+	bolynomial =bolynomial+"+" +  binary[x]+"*x^"+ xsting ;
+	}
+		index-- ;
+
+}
+bolynomial = bolynomial.substr(1) ;
+return bolynomial ;
+
+}
+
+
+string xor1(string tmp,string g_p)
+{
+    string ret="";
+    bool first1=false;
+    for (int i=0; i<g_size; ++i)
+    {
+        if (tmp[i]!=g_p[i] )
+        {
+            first1=true;
+            ret+='1';
+        }
+        else
+        {
+            if (first1)
+                ret+='0';
+        }
+    }
+   // cout<<tmp<<"\n";
+    return ret;
+
+}
+
+void generator()
+{
+
+    string tmp="",tmp2="";
+    int tmp_size;
+    sent_message="";
+    g_size=generator_binary.size();
+    for (int i=1;i<g_size;++i)
+        sent_message+='0';
+    sent_message=data+sent_message;
+   // cout<<sent_message<<"\n";//1
+    s_m_size=sent_message.size();
+   // cout<<s_m_size<<"\n";
+    for (int i=0;i<s_m_size;++i)
+    {
+        tmp_size=tmp.size();
+        if (tmp_size < g_size)
+            tmp+=sent_message[i];
+        tmp_size=tmp.size();
+        if (tmp_size==g_size)
+            tmp=xor1(tmp,generator_binary);
+    }
+    tmp_size=tmp.size();
+    tmp_size=g_size-tmp_size;
+    for (int i=1;i<tmp_size;++i)
+        tmp2+='0';
+    tmp=tmp2+tmp;
+    sent_message=data+tmp;
+    cout<<"Binary Data: "<<sent_message<<endl<<endl;
+    string message_polynomial = binary_to_polynomial(sent_message);
+    cout<<"Polynomial Data: "<<message_polynomial<<endl;
+}
+
+void verifier()
+{
+    string tmp="",tmp2="";
+    int tmp_size;
+    bool correct = true;
+   // sent_message="";
+    g_size=generator_binary.size();
+    /*for (int i=1;i<g_size;++i)
+        sent_message+='0';
+    sent_message=data+sent_message;*/
+   // cout<<sent_message<<"\n";//1
+    s_m_size=sent_message.size();
+   // cout<<s_m_size<<"\n";
+    for (int i=0;i<s_m_size;++i)
+    {
+        tmp_size=tmp.size();
+        if (tmp_size < g_size)
+            tmp+=sent_message[i];
+        tmp_size=tmp.size();
+        if (tmp_size==g_size)
+            tmp=xor1(tmp,generator_binary);
+    }
+    tmp_size=tmp.size();
+    //cout<<tmp;
+    for (int i=0;i<tmp_size;++i)
+        if(tmp[i]!='0')
+            correct=false;
+    if (correct)
+        cout<<"\nVerifier says: correct message\n";
+    else
+        cout<<"\nVerifier says: wrong message\n";
+
+}
+
+
+
+void alter(int index)
+{
+	int m = sent_message.size() - 1 - index;
+    if(sent_message[m]=='0') sent_message[m]='1';
+    else sent_message[m]='0';
+}
+
+
+int main()
+{
+    int choice;
+    cout<<"enter the data you want to send:";
+    cin>>data;
+    puts("");
+    cout<<"enter the generator polynomial:";
+    cin>>generator_polynomial;
+
+    generator_binary = polynomial_to_binary(generator_polynomial);
+
+    puts("");
+    cout<<"if you want the message to be sent right press 1 else press 0\nenter your choice:";
+    cin>>choice;
+    puts("");
+    if (choice)
+    {
+        generator();
+        verifier();
+    }
+    else
+    {
+        cout<<"enter alter index"<<endl;
+        int index;
+        cin>>index;
+
+        generator();
+        alter(index);
+        verifier();
+    }
+
+}
