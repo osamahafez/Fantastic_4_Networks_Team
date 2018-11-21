@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <conio.h>
 using namespace std;
 string data,sent_message,generator_polynomial,generator_binary;
 int g_size,s_m_size;
@@ -167,18 +168,23 @@ void alter(int index)
 int main()
 {
     int choice;
-    cout<<"enter the data you want to send:";
-    cin>>data;
-    puts("");
-    cout<<"enter the generator polynomial:";
-    cin>>generator_polynomial;
+    int index;
 
+    cout<<"enter the data you want to send:"<<endl;
+    //cin>>data;
+    getline(cin, data);
+    cout<<"enter the generator polynomial:"<<endl;
+    //cin>>generator_polynomial;
+    getline(cin, generator_polynomial);
+    //generator_polynomial="x^4 + x^1 + 1";
     generator_binary = polynomial_to_binary(generator_polynomial);
 
-    puts("");
-    cout<<"if you want the message to be sent right press 1 else press 0\nenter your choice:";
+    //puts("");
+    //cin.ignore();
+    cout<<"if you want the message to be sent right press 1 else press 0"<<endl<<"enter your choice:"<<endl;
+
     cin>>choice;
-    puts("");
+    //puts("");
     if (choice)
     {
         generator();
@@ -186,13 +192,16 @@ int main()
     }
     else
     {
-        cout<<"enter alter index"<<endl;
-        int index;
+        cout<<"enter alter index: "<<endl;
+
         cin>>index;
 
         generator();
         alter(index);
         verifier();
     }
+
+    //getch();
+   // return 0;
 
 }
