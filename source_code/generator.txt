@@ -1,0 +1,30 @@
+void generator()
+{
+
+    string tmp="",tmp2="";
+    int tmp_size;
+    sent_message="";
+    g_size=generator_binary.size();
+    for (int i=1;i<g_size;++i)
+        sent_message+='0';
+    sent_message=data+sent_message;
+   // cout<<sent_message<<"\n";//1
+    s_m_size=sent_message.size();
+   // cout<<s_m_size<<"\n";
+    for (int i=0;i<s_m_size;++i)
+    {
+        tmp_size=tmp.size();
+        if (tmp_size < g_size)
+            tmp+=sent_message[i];
+        tmp_size=tmp.size();
+        if (tmp_size==g_size)
+            tmp=xor1(tmp,generator_binary);
+    }
+    tmp_size=tmp.size();
+    tmp_size=g_size-tmp_size;
+    for (int i=1;i<tmp_size;++i)
+        tmp2+='0';
+    tmp=tmp2+tmp;
+    sent_message=data+tmp;
+    cout<<sent_message;
+}
