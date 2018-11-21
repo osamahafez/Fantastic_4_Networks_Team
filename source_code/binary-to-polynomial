@@ -1,0 +1,20 @@
+
+string poly ( string binary ){
+	string bolynomial =""; 
+int index = binary.length() -1 ; 
+
+for (int x = 0  ; x <binary.length() ; x++){
+
+	if ( binary[x] =='1'){
+	stringstream xx ; 
+	xx<<index ; 
+	string xsting = xx.str() ; 
+	bolynomial =bolynomial+"+" +  binary[x]+"*x^"+ xsting ; 
+	}
+		index-- ; 
+
+}
+bolynomial = bolynomial.substr(1) ; 
+return bolynomial ; 
+
+}
