@@ -1,0 +1,6 @@
+void alter(int index)
+{
+	int m = sent_message.size() - 1 - index;
+    if(sent_message[m]=='0') sent_message[m]='1';
+    else sent_message[m]='0';
+}
