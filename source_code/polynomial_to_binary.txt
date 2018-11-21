@@ -1,0 +1,39 @@
+string polynomial_to_binary(string poly) {
+
+    string binary_no;
+    vector<int> v;
+
+    for(size_t i=0; i<poly.size(); i++) {
+
+        if(isdigit(poly[i])) {
+
+            if(i!=0 && poly[i-1]=='^') {
+
+                stringstream stream;
+                int num;
+                stream << poly[i];
+                stream >> num;
+
+                v.push_back(num);
+            }
+            else {
+                v.push_back(0);
+            }
+        }
+    }
+
+    int n = v[0]+1;
+    while (n--) {
+        binary_no+="0";
+    }
+
+    for(size_t i=0; i<v.size(); i++) {
+       int t = v[i];
+       binary_no[t] = '1';
+    }
+
+    reverse(binary_no.begin(), binary_no.end());
+
+    return binary_no;
+
+}
